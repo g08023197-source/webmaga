@@ -4,7 +4,7 @@ import { saveMetrics, loadMetrics } from '../lib/storage';
 import { fetchMetrics, updateMetric, addActivityLog } from '../lib/database';
 
 const INITIAL_METRICS: MetricData = {
-  revenue: 368,
+  revenue: 351,
   linkedinFollowers: 8750,
   linkedinGroupMembers: 784705,
   facebookFollowers: 10679,
@@ -26,7 +26,7 @@ export const useLiveMetrics = () => {
         } else {
           const dbMetrics = await fetchMetrics();
           const metricsData: MetricData = {
-            revenue: dbMetrics.find(m => m.metric_type === 'revenue')?.current_value || 368,
+            revenue: dbMetrics.find(m => m.metric_type === 'revenue')?.current_value || 351,
             linkedinFollowers: dbMetrics.find(m => m.metric_type === 'linkedin_followers')?.current_value || 8750,
             linkedinGroupMembers: dbMetrics.find(m => m.metric_type === 'linkedin_group_members')?.current_value || 784705,
             facebookFollowers: dbMetrics.find(m => m.metric_type === 'facebook_followers')?.current_value || 10679,
@@ -81,7 +81,7 @@ export const useLiveMetrics = () => {
         });
       } else if (random < 0.05) {
         setMetrics(prev => {
-          const newRevenue = Math.max(prev.revenue - Math.random() * 0.01, 368);
+          const newRevenue = Math.max(prev.revenue - Math.random() * 0.01, 351);
           const newMetrics = { ...prev, revenue: Number(newRevenue.toFixed(2)) };
           saveMetrics(newMetrics);
           return newMetrics;
