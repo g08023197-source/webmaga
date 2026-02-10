@@ -5,9 +5,10 @@ import { fetchMetrics, updateMetric, addActivityLog } from '../lib/database';
 
 const INITIAL_METRICS: MetricData = {
   revenue: 368,
-  linkedinFollowers: 7000,
-  facebookFollowers: 9276,
-  discordMembers: 82670,
+  linkedinFollowers: 8750,
+  linkedinGroupMembers: 784705,
+  facebookFollowers: 10679,
+  discordMembers: 350795,
   linkedinViews: 15000,
   discordActivity: 8000,
 };
@@ -26,9 +27,10 @@ export const useLiveMetrics = () => {
           const dbMetrics = await fetchMetrics();
           const metricsData: MetricData = {
             revenue: dbMetrics.find(m => m.metric_type === 'revenue')?.current_value || 368,
-            linkedinFollowers: dbMetrics.find(m => m.metric_type === 'linkedin_followers')?.current_value || 7000,
-            facebookFollowers: dbMetrics.find(m => m.metric_type === 'facebook_followers')?.current_value || 9276,
-            discordMembers: dbMetrics.find(m => m.metric_type === 'discord_members')?.current_value || 82670,
+            linkedinFollowers: dbMetrics.find(m => m.metric_type === 'linkedin_followers')?.current_value || 8750,
+            linkedinGroupMembers: dbMetrics.find(m => m.metric_type === 'linkedin_group_members')?.current_value || 784705,
+            facebookFollowers: dbMetrics.find(m => m.metric_type === 'facebook_followers')?.current_value || 10679,
+            discordMembers: dbMetrics.find(m => m.metric_type === 'discord_members')?.current_value || 350795,
             linkedinViews: dbMetrics.find(m => m.metric_type === 'linkedin_views')?.current_value || 15000,
             discordActivity: dbMetrics.find(m => m.metric_type === 'discord_activity')?.current_value || 8000,
           };
@@ -96,7 +98,7 @@ export const useLiveMetrics = () => {
         } else if (random < 0.05) {
           change = -1;
         }
-        const newFollowers = Math.max(prev.linkedinFollowers + change, 7000);
+        const newFollowers = Math.max(prev.linkedinFollowers + change, 8750);
         const newMetrics = { ...prev, linkedinFollowers: newFollowers };
         saveMetrics(newMetrics);
 
@@ -119,7 +121,7 @@ export const useLiveMetrics = () => {
         } else if (random < 0.08) {
           change = -1;
         }
-        const newFollowers = Math.max(prev.facebookFollowers + change, 9276);
+        const newFollowers = Math.max(prev.facebookFollowers + change, 10679);
         const newMetrics = { ...prev, facebookFollowers: newFollowers };
         saveMetrics(newMetrics);
 
@@ -142,7 +144,7 @@ export const useLiveMetrics = () => {
         } else if (random < 0.1) {
           change = -Math.floor(Math.random() * 2) - 1;
         }
-        const newMembers = Math.max(prev.discordMembers + change, 82670);
+        const newMembers = Math.max(prev.discordMembers + change, 350795);
         const newMetrics = { ...prev, discordMembers: newMembers };
         saveMetrics(newMetrics);
 
@@ -153,6 +155,30 @@ export const useLiveMetrics = () => {
         return newMetrics;
       });
     }, Math.random() * 35000 + 45000);
+
+    const linkedinGroupInterval = setInterval(() => {
+      const random = Math.random();
+      setMetrics(prev => {
+        let change = 0;
+        if (random > 0.5) {
+          change = Math.floor(Math.random() * 5) + 1;
+          if (Math.random() > 0.85) {
+            change += Math.floor(Math.random() * 3);
+          }
+        } else if (random < 0.08) {
+          change = -Math.floor(Math.random() * 2);
+        }
+        const newMembers = Math.max(prev.linkedinGroupMembers + change, 784705);
+        const newMetrics = { ...prev, linkedinGroupMembers: newMembers };
+        saveMetrics(newMetrics);
+
+        if (Math.abs(change) > 4) {
+          syncToDatabase('linkedin_group_members', newMembers);
+          addActivityLog('LinkedIn Group membership increased');
+        }
+        return newMetrics;
+      });
+    }, Math.random() * 30000 + 40000);
 
     const viewsInterval = setInterval(() => {
       setMetrics(prev => {
@@ -176,6 +202,7 @@ export const useLiveMetrics = () => {
     return () => {
       clearInterval(revenueInterval);
       clearInterval(linkedinInterval);
+      clearInterval(linkedinGroupInterval);
       clearInterval(facebookInterval);
       clearInterval(discordInterval);
       clearInterval(viewsInterval);

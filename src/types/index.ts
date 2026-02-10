@@ -41,6 +41,7 @@ export interface AudienceMessage {
 export interface MetricData {
   revenue: number;
   linkedinFollowers: number;
+  linkedinGroupMembers: number;
   facebookFollowers: number;
   discordMembers: number;
   linkedinViews: number;

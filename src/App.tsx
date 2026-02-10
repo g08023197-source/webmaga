@@ -54,8 +54,8 @@ function App() {
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Key Performance Metrics</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <GlobalCommunityCard
-              total={metrics.linkedinFollowers + metrics.facebookFollowers + metrics.discordMembers}
-              onClick={() => openAnalytics('Global Community Growth', metrics.linkedinFollowers + metrics.facebookFollowers + metrics.discordMembers, '#3b82f6')}
+              total={metrics.linkedinFollowers + metrics.linkedinGroupMembers + metrics.facebookFollowers + metrics.discordMembers}
+              onClick={() => openAnalytics('Global Community Growth', metrics.linkedinFollowers + metrics.linkedinGroupMembers + metrics.facebookFollowers + metrics.discordMembers, '#3b82f6')}
             />
             <MonthlyReachCard
               onClick={() => openAnalytics('Monthly Reach Analytics', 8264985, '#10b981')}
@@ -69,7 +69,7 @@ function App() {
 
         <div className="mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Audience Metrics</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <AudienceCard
               platform="LinkedIn"
               count={metrics.linkedinFollowers}
@@ -77,6 +77,13 @@ function App() {
               icon="linkedin"
               views={metrics.linkedinViews}
               onClick={() => openAnalytics('LinkedIn Followers', metrics.linkedinFollowers, '#0A66C2')}
+            />
+            <AudienceCard
+              platform="LinkedIn Group"
+              count={metrics.linkedinGroupMembers}
+              subtitle="Community Members"
+              icon="linkedinGroup"
+              onClick={() => openAnalytics('LinkedIn Group Members', metrics.linkedinGroupMembers, '#0A66C2')}
             />
             <AudienceCard
               platform="Facebook"

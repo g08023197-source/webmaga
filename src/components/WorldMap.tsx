@@ -124,7 +124,7 @@ export const WorldMap = () => {
       <div className="bg-white rounded-lg border border-gray-200 p-4 shadow-sm">
         <div
           ref={mapContainerRef}
-          className="w-full h-[280px] rounded-lg overflow-hidden"
+          className="w-full h-[400px] md:h-[450px] rounded-lg overflow-hidden"
           style={{ zIndex: 1 }}
         />
 
